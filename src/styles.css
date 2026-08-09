@@ -346,6 +346,8 @@
 
   html {
     scroll-behavior: smooth;
+    overflow-x: hidden;
+    max-width: 100vw;
   }
 
   body {
@@ -353,6 +355,14 @@
     color: var(--color-foreground);
     font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+    max-width: 100vw;
+  }
+
+  img,
+  video {
+    max-width: 100%;
+    height: auto;
   }
 
   h1,

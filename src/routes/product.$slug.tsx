@@ -127,24 +127,24 @@ function ProductPage() {
 
           {product.colors.length > 0 ? (
             <div className="mt-4">
-              <div className="mb-2 text-xs font-bold uppercase tracking-wider text-muted-foreground">
+              <div className="mb-2.5 text-sm font-bold uppercase tracking-wider text-muted-foreground">
                 Colour: <span className="text-foreground">{selectedColor}</span>
               </div>
-              <div className="flex flex-wrap gap-2.5">
+              <div className="flex flex-wrap gap-3">
                 {product.colors.map((c) => (
                   <button
                     key={c.name}
                     type="button"
                     title={c.name}
                     onClick={() => pickColor(c.name)}
-                    className={`flex size-9 items-center justify-center rounded-full border-2 transition-transform ${
+                    className={`flex size-12 items-center justify-center rounded-full border-2 transition-transform active:scale-95 ${
                       selectedColor === c.name
                         ? "border-primary scale-110"
                         : "border-border hover:scale-105"
                     }`}
                   >
                     <span
-                      className="size-6 rounded-full border border-black/10"
+                      className="size-9 rounded-full border border-black/10"
                       style={{ backgroundColor: c.hex }}
                     />
                   </button>
