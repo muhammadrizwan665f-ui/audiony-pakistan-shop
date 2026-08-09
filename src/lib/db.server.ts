@@ -1,9 +1,13 @@
 import { createClient } from "@supabase/supabase-js";
 
+const FALLBACK_SUPABASE_URL = "https://ldotvhkiapwhjiitgsak.supabase.co";
+const FALLBACK_SUPABASE_PUBLISHABLE_KEY = "sb_publishable_nkVvVwJEhfyuowlVkAC8sw_qwyKbvSC";
+
 /** Publishable-key client for public reads (RLS applies as anon). Server-only. */
 export function getPublicClient() {
-  const key = process.env["SUPABASE_PUBLISHABLE_KEY"]!;
-  return createClient(process.env["SUPABASE_URL"]!, key, {
+  const key = process.env["SUPABASE_PUBLISHABLE_KEY"] || FALLBACK_SUPABASE_PUBLISHABLE_KEY;
+  const url = process.env["SUPABASE_URL"] || FALLBACK_SUPABASE_URL;
+  return createClient(url, key, {
     auth: { persistSession: false, autoRefreshToken: false },
     global: {
       fetch: (input: RequestInfo | URL, init?: RequestInit) => {
