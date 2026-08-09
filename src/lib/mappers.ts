@@ -48,6 +48,7 @@ export function rowToProduct(r: Row): Product {
     sortOrder: num(r["sort_order"]),
     reviews: arr(r["reviews"]),
     faqs: arr(r["faqs"]),
+    colors: arr<{ name: string; hex: string; image?: string }>(r["colors"]),
   };
 }
 
@@ -82,6 +83,7 @@ export function productToRow(p: Product): Row {
     trending: p.trending,
     active: p.active,
     sort_order: p.sortOrder,
+    colors: p.colors,
     updated_at: new Date().toISOString(),
   };
 }

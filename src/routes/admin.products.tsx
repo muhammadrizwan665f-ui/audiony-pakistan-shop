@@ -58,6 +58,7 @@ function blankProduct(sortOrder: number): Product {
     sortOrder,
     reviews: [],
     faqs: [],
+    colors: [],
   };
 }
 
@@ -377,6 +378,74 @@ function ProductForm({
           />
           {uploading ? <span className="text-xs text-muted-foreground">Uploading…</span> : null}
         </div>
+      </div>
+
+      <div className="sm:col-span-2">
+        <Label>Colours</Label>
+        <p className="mt-1 text-xs text-muted-foreground">
+          Add colour options customers can pick on the product page. Optionally link a colour to
+          one of the images above (it'll switch the main photo when selected).
+        </p>
+        <div className="mt-2 space-y-2">
+          {value.colors.map((c, i) => (
+            <div key={i} className="flex flex-wrap items-center gap-2 rounded-xl border border-border p-2.5">
+              <input
+                type="color"
+                value={c.hex}
+                onChange={(e) => {
+                  const next = [...value.colors];
+                  next[i] = { ...next[i]!, hex: e.target.value };
+                  onChange({ ...value, colors: next });
+                }}
+                className="size-9 shrink-0 cursor-pointer rounded-lg border border-border bg-transparent p-0.5"
+              />
+              <Input
+                placeholder="Colour name e.g. Midnight Black"
+                value={c.name}
+                onChange={(e) => {
+                  const next = [...value.colors];
+                  next[i] = { ...next[i]!, name: e.target.value };
+                  onChange({ ...value, colors: next });
+                }}
+                className="min-w-[160px] flex-1"
+              />
+              <select
+                value={c.image ?? ""}
+                onChange={(e) => {
+                  const next = [...value.colors];
+                  next[i] = { ...next[i]!, image: e.target.value || undefined };
+                  onChange({ ...value, colors: next });
+                }}
+                className="rounded-lg border border-border bg-background px-2 py-2 text-sm"
+              >
+                <option value="">No linked photo</option>
+                {value.images.map((src, k) => (
+                  <option key={src} value={src}>
+                    Photo {k + 1}
+                  </option>
+                ))}
+              </select>
+              <button
+                type="button"
+                className="rounded-full bg-destructive px-3 py-1.5 text-xs font-semibold text-destructive-foreground"
+                onClick={() => onChange({ ...value, colors: value.colors.filter((_, k) => k !== i) })}
+              >
+                Remove
+              </button>
+            </div>
+          ))}
+        </div>
+        <Button
+          type="button"
+          variant="outline"
+          size="sm"
+          className="mt-2.5"
+          onClick={() =>
+            onChange({ ...value, colors: [...value.colors, { name: "", hex: "#000000" }] })
+          }
+        >
+          + Add colour
+        </Button>
       </div>
 
       <div>

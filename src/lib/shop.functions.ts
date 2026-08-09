@@ -5,7 +5,13 @@ import { computeTotals, lineTotal } from "./pricing";
 
 const cartSchema = z.object({
   lines: z
-    .array(z.object({ productId: z.string().uuid(), qty: z.number().int().min(1).max(999) }))
+    .array(
+      z.object({
+        productId: z.string().uuid(),
+        qty: z.number().int().min(1).max(999),
+        color: z.string().trim().max(60).optional(),
+      }),
+    )
     .min(1)
     .max(40),
   paymentCode: z.string().trim().min(2).max(40),
@@ -83,8 +89,15 @@ export const createOrder = createServerFn({ method: "POST" })
     const products = (productRows ?? []).map(rowToProduct);
 
     const lines = data.lines
-      .map((l) => ({ product: products.find((p) => p.id === l.productId), qty: l.qty }))
-      .filter((l): l is { product: (typeof products)[number]; qty: number } => Boolean(l.product));
+      .map((l) => ({
+        product: products.find((p) => p.id === l.productId),
+        qty: l.qty,
+        color: l.color,
+      }))
+      .filter(
+        (l): l is { product: (typeof products)[number]; qty: number; color: string | undefined } =>
+          Boolean(l.product),
+      );
     if (lines.length === 0) throw new Error("Your cart items are no longer available.");
 
     let couponPct = 0;
@@ -149,11 +162,12 @@ export const createOrder = createServerFn({ method: "POST" })
       .insert({
         order_no: orderNo,
         customer: data.customer,
-        lines: lines.map(({ product, qty }) => {
+        lines: lines.map(({ product, qty, color }) => {
           const t = lineTotal(product, qty);
           return {
             productId: product.id,
             name: product.name,
+            color: color || undefined,
             qty,
             unitPrice: Math.round(t.total / qty),
             lineTotal: t.total,

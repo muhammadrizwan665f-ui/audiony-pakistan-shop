@@ -45,6 +45,9 @@ function ProductPage() {
   const product = products.find((p) => p.slug === slug);
   const [qty, setQty] = useState(1);
   const [img, setImg] = useState(0);
+  const [selectedColor, setSelectedColor] = useState<string | undefined>(
+    product?.colors?.[0]?.name,
+  );
 
   if (!product) throw notFound();
 
@@ -54,8 +57,17 @@ function ProductPage() {
   const wished = wishlist.includes(product.id);
   const bestPay = payments.filter((p) => p.enabled).sort((a, b) => b.discountPct - a.discountPct)[0];
 
+  function pickColor(name: string) {
+    setSelectedColor(name);
+    const c = product?.colors.find((c) => c.name === name);
+    if (c?.image) {
+      const idx = product?.images.indexOf(c.image) ?? -1;
+      if (idx >= 0) setImg(idx);
+    }
+  }
+
   const waText = encodeURIComponent(
-    `Assalam o Alaikum! I want to order: ${product.name} (Qty ${qty}) — ${formatPKR(t.total)}`,
+    `Assalam o Alaikum! I want to order: ${product.name}${selectedColor ? ` (Color: ${selectedColor})` : ""} (Qty ${qty}) — ${formatPKR(t.total)}`,
   );
 
   return (
@@ -112,6 +124,34 @@ function ProductPage() {
               </span>
             ))}
           </div>
+
+          {product.colors.length > 0 ? (
+            <div className="mt-4">
+              <div className="mb-2 text-xs font-bold uppercase tracking-wider text-muted-foreground">
+                Colour: <span className="text-foreground">{selectedColor}</span>
+              </div>
+              <div className="flex flex-wrap gap-2.5">
+                {product.colors.map((c) => (
+                  <button
+                    key={c.name}
+                    type="button"
+                    title={c.name}
+                    onClick={() => pickColor(c.name)}
+                    className={`flex size-9 items-center justify-center rounded-full border-2 transition-transform ${
+                      selectedColor === c.name
+                        ? "border-primary scale-110"
+                        : "border-border hover:scale-105"
+                    }`}
+                  >
+                    <span
+                      className="size-6 rounded-full border border-black/10"
+                      style={{ backgroundColor: c.hex }}
+                    />
+                  </button>
+                ))}
+              </div>
+            </div>
+          ) : null}
 
           <h1 className="mt-3 text-3xl font-bold sm:text-4xl">{product.name}</h1>
           <p className="mt-2 text-muted-foreground">{product.tagline}</p>
@@ -236,14 +276,14 @@ function ProductPage() {
             <Button
               size="lg"
               onClick={() => {
-                addToCart(product.id, qty);
+                addToCart(product.id, qty, selectedColor);
                 toast.success("Added to cart", { description: product.name });
               }}
             >
               Add to Cart
             </Button>
             <Button size="lg" variant="secondary" asChild>
-              <Link to="/checkout" onClick={() => addToCart(product.id, qty)}>
+              <Link to="/checkout" onClick={() => addToCart(product.id, qty, selectedColor)}>
                 Buy Now
               </Link>
             </Button>
@@ -400,14 +440,14 @@ function ProductPage() {
           </div>
           <Button
             onClick={() => {
-              addToCart(product.id, qty);
+              addToCart(product.id, qty, selectedColor);
               toast.success("Added to cart");
             }}
           >
             Add to Cart
           </Button>
           <Button variant="secondary" asChild>
-            <Link to="/checkout" onClick={() => addToCart(product.id, qty)}>
+            <Link to="/checkout" onClick={() => addToCart(product.id, qty, selectedColor)}>
               Buy Now
             </Link>
           </Button>

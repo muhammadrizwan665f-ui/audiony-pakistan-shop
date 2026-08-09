@@ -47,9 +47,9 @@ interface StoreApi extends StoreState {
   hydrated: boolean;
   loading: boolean;
   refresh: () => Promise<void>;
-  addToCart: (productId: string, qty?: number) => void;
-  setQty: (productId: string, qty: number) => void;
-  removeFromCart: (productId: string) => void;
+  addToCart: (productId: string, qty?: number, color?: string) => void;
+  setQty: (productId: string, qty: number, color?: string) => void;
+  removeFromCart: (productId: string, color?: string) => void;
   clearCart: () => void;
   toggleWishlist: (productId: string) => void;
   previewTheme: (t: ThemeId | null) => void;
@@ -170,22 +170,35 @@ export function StoreProvider({ children }: { children: ReactNode }) {
       loading,
       refresh,
       previewTheme: setPreview,
-      addToCart: (productId, qty = 1) =>
+      addToCart: (productId, qty = 1, color) =>
         patch((s) => ({
           ...s,
-          cart: s.cart.some((l) => l.productId === productId)
-            ? s.cart.map((l) => (l.productId === productId ? { ...l, qty: l.qty + qty } : l))
-            : [...s.cart, { productId, qty }],
+          cart: s.cart.some((l) => l.productId === productId && (l.color ?? "") === (color ?? ""))
+            ? s.cart.map((l) =>
+                l.productId === productId && (l.color ?? "") === (color ?? "")
+                  ? { ...l, qty: l.qty + qty }
+                  : l,
+              )
+            : [...s.cart, { productId, qty, color }],
         })),
-      setQty: (productId, qty) =>
+      setQty: (productId, qty, color) =>
         patch((s) => ({
           ...s,
           cart: s.cart
-            .map((l) => (l.productId === productId ? { ...l, qty: Math.max(1, qty) } : l))
+            .map((l) =>
+              l.productId === productId && (l.color ?? "") === (color ?? "")
+                ? { ...l, qty: Math.max(1, qty) }
+                : l,
+            )
             .filter((l) => l.qty > 0),
         })),
-      removeFromCart: (productId) =>
-        patch((s) => ({ ...s, cart: s.cart.filter((l) => l.productId !== productId) })),
+      removeFromCart: (productId, color) =>
+        patch((s) => ({
+          ...s,
+          cart: s.cart.filter(
+            (l) => !(l.productId === productId && (l.color ?? "") === (color ?? "")),
+          ),
+        })),
       clearCart: () => patch((s) => ({ ...s, cart: [] })),
       toggleWishlist: (productId) =>
         patch((s) => ({

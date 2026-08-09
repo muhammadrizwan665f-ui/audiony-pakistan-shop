@@ -138,9 +138,10 @@ function AdminOrders() {
 
               <ul className="mt-4 space-y-1 text-sm">
                 {o.lines.map((l) => (
-                  <li key={l.productId} className="flex justify-between">
+                  <li key={l.productId + (l.color ?? "")} className="flex justify-between">
                     <span>
-                      {l.name} × {l.qty}
+                      {l.name}
+                      {l.color ? ` (${l.color})` : ""} × {l.qty}
                     </span>
                     <span>{formatPKR(l.lineTotal)}</span>
                   </li>

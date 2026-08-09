@@ -81,7 +81,7 @@ function Checkout() {
   });
 
   const lines = cart
-    .map((l) => ({ product: products.find((p) => p.id === l.productId)!, qty: l.qty }))
+    .map((l) => ({ product: products.find((p) => p.id === l.productId)!, qty: l.qty, color: l.color }))
     .filter((l) => l.product);
 
   const activeMethods = payments.filter((p) => p.enabled);
@@ -123,7 +123,7 @@ function Checkout() {
 
       const order = await createOrder({
         data: {
-          lines: lines.map(({ product, qty }) => ({ productId: product.id, qty })),
+          lines: lines.map(({ product, qty, color }) => ({ productId: product.id, qty, color })),
           paymentCode: method,
           customer: {
             fullName: form.fullName,
@@ -287,12 +287,14 @@ function Checkout() {
         <aside className="premium-card h-fit p-6 lg:sticky lg:top-28">
           <h2 className="font-display text-lg font-bold">Order summary</h2>
           <ul className="mt-4 space-y-3">
-            {lines.map(({ product, qty }) => (
-              <li key={product.id} className="flex gap-3 text-sm">
+            {lines.map(({ product, qty, color }) => (
+              <li key={product.id + (color ?? "")} className="flex gap-3 text-sm">
                 <img src={product.images[0]} alt="" loading="lazy" className="size-12 rounded-xl object-cover" />
                 <div className="flex-1">
                   <p className="font-medium leading-tight">{product.name}</p>
-                  <p className="text-xs text-muted-foreground">Qty {qty}</p>
+                  <p className="text-xs text-muted-foreground">
+                    {color ? `${color} · ` : ""}Qty {qty}
+                  </p>
                 </div>
                 <span className="font-semibold">{formatPKR(lineTotal(product, qty).total)}</span>
               </li>

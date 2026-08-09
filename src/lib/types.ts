@@ -43,6 +43,12 @@ export interface Review {
   adminReply?: string | undefined;
 }
 
+export interface ProductColor {
+  name: string;
+  hex: string;
+  image?: string | undefined;
+}
+
 export interface Product {
   id: string;
   slug: string;
@@ -74,6 +80,7 @@ export interface Product {
   sortOrder: number;
   reviews: Review[];
   faqs: { q: string; a: string }[];
+  colors: ProductColor[];
 }
 
 export interface PaymentMethod {
@@ -101,6 +108,7 @@ export interface Coupon {
 export interface CartLine {
   productId: string;
   qty: number;
+  color?: string | undefined;
 }
 
 export interface Customer {
@@ -120,7 +128,7 @@ export interface Order {
   id: string;
   createdAt: string;
   customer: Customer;
-  lines: { productId: string; name: string; qty: number; unitPrice: number; lineTotal: number }[];
+  lines: { productId: string; name: string; color?: string | undefined; qty: number; unitPrice: number; lineTotal: number }[];
   paymentMethod: PaymentMethodId;
   coupon?: string | undefined;
   subtotal: number;

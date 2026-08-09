@@ -45,9 +45,10 @@ function OrderPage() {
         {order ? (
           <div className="mt-8 space-y-3 text-left">
             {order.lines.map((l) => (
-              <div key={l.productId} className="flex justify-between text-sm">
+              <div key={l.productId + (l.color ?? "")} className="flex justify-between text-sm">
                 <span>
-                  {l.name} × {l.qty}
+                  {l.name}
+                  {l.color ? ` (${l.color})` : ""} × {l.qty}
                 </span>
                 <span className="font-semibold">{formatPKR(l.lineTotal)}</span>
               </div>
