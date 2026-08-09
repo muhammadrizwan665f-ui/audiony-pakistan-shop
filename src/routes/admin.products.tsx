@@ -383,55 +383,84 @@ function ProductForm({
       <div className="sm:col-span-2">
         <Label>Colours</Label>
         <p className="mt-1 text-xs text-muted-foreground">
-          Add colour options customers can pick on the product page. Optionally link a colour to
-          one of the images above (it'll switch the main photo when selected).
+          Add colour options customers can pick on the product page. Upload that colour's photos
+          in the Images section above first, then tick which ones belong to this colour (pick
+          3–5) — the whole gallery switches to them when the customer selects this colour.
         </p>
-        <div className="mt-2 space-y-2">
+        <div className="mt-2 space-y-3">
           {value.colors.map((c, i) => (
-            <div key={i} className="flex flex-wrap items-center gap-2 rounded-xl border border-border p-2.5">
-              <input
-                type="color"
-                value={c.hex}
-                onChange={(e) => {
-                  const next = [...value.colors];
-                  next[i] = { ...next[i]!, hex: e.target.value };
-                  onChange({ ...value, colors: next });
-                }}
-                className="size-9 shrink-0 cursor-pointer rounded-lg border border-border bg-transparent p-0.5"
-              />
-              <Input
-                placeholder="Colour name e.g. Midnight Black"
-                value={c.name}
-                onChange={(e) => {
-                  const next = [...value.colors];
-                  next[i] = { ...next[i]!, name: e.target.value };
-                  onChange({ ...value, colors: next });
-                }}
-                className="min-w-[160px] flex-1"
-              />
-              <select
-                value={c.image ?? ""}
-                onChange={(e) => {
-                  const next = [...value.colors];
-                  next[i] = { ...next[i]!, image: e.target.value || undefined };
-                  onChange({ ...value, colors: next });
-                }}
-                className="rounded-lg border border-border bg-background px-2 py-2 text-sm"
-              >
-                <option value="">No linked photo</option>
-                {value.images.map((src, k) => (
-                  <option key={src} value={src}>
-                    Photo {k + 1}
-                  </option>
-                ))}
-              </select>
-              <button
-                type="button"
-                className="rounded-full bg-destructive px-3 py-1.5 text-xs font-semibold text-destructive-foreground"
-                onClick={() => onChange({ ...value, colors: value.colors.filter((_, k) => k !== i) })}
-              >
-                Remove
-              </button>
+            <div key={i} className="rounded-xl border border-border p-3">
+              <div className="flex flex-wrap items-center gap-2">
+                <input
+                  type="color"
+                  value={c.hex}
+                  onChange={(e) => {
+                    const next = [...value.colors];
+                    next[i] = { ...next[i]!, hex: e.target.value };
+                    onChange({ ...value, colors: next });
+                  }}
+                  className="size-9 shrink-0 cursor-pointer rounded-lg border border-border bg-transparent p-0.5"
+                />
+                <Input
+                  placeholder="Colour name e.g. Midnight Black"
+                  value={c.name}
+                  onChange={(e) => {
+                    const next = [...value.colors];
+                    next[i] = { ...next[i]!, name: e.target.value };
+                    onChange({ ...value, colors: next });
+                  }}
+                  className="min-w-[160px] flex-1"
+                />
+                <button
+                  type="button"
+                  className="rounded-full bg-destructive px-3 py-1.5 text-xs font-semibold text-destructive-foreground"
+                  onClick={() => onChange({ ...value, colors: value.colors.filter((_, k) => k !== i) })}
+                >
+                  Remove colour
+                </button>
+              </div>
+
+              <div className="mt-3">
+                <span className="text-xs font-semibold text-muted-foreground">
+                  Photos for this colour ({(c.images ?? []).length} selected)
+                </span>
+                {value.images.length === 0 ? (
+                  <p className="mt-1 text-xs text-muted-foreground">
+                    Upload photos in the Images section above first.
+                  </p>
+                ) : (
+                  <div className="mt-2 flex flex-wrap gap-2">
+                    {value.images.map((src, k) => {
+                      const selected = (c.images ?? []).includes(src);
+                      return (
+                        <button
+                          key={src}
+                          type="button"
+                          onClick={() => {
+                            const current = c.images ?? [];
+                            const nextImages = selected
+                              ? current.filter((s) => s !== src)
+                              : [...current, src];
+                            const next = [...value.colors];
+                            next[i] = { ...next[i]!, images: nextImages };
+                            onChange({ ...value, colors: next });
+                          }}
+                          className={`relative overflow-hidden rounded-xl border-2 ${
+                            selected ? "border-primary" : "border-transparent"
+                          }`}
+                        >
+                          <img src={src} alt="" className="size-16 object-cover" />
+                          {selected ? (
+                            <span className="absolute right-1 top-1 flex size-4 items-center justify-center rounded-full bg-primary text-[10px] font-bold text-primary-foreground">
+                              ✓
+                            </span>
+                          ) : null}
+                        </button>
+                      );
+                    })}
+                  </div>
+                )}
+              </div>
             </div>
           ))}
         </div>
@@ -441,7 +470,7 @@ function ProductForm({
           size="sm"
           className="mt-2.5"
           onClick={() =>
-            onChange({ ...value, colors: [...value.colors, { name: "", hex: "#000000" }] })
+            onChange({ ...value, colors: [...value.colors, { name: "", hex: "#000000", images: [] }] })
           }
         >
           + Add colour

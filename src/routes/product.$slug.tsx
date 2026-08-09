@@ -59,12 +59,12 @@ function ProductPage() {
 
   function pickColor(name: string) {
     setSelectedColor(name);
-    const c = product?.colors.find((c) => c.name === name);
-    if (c?.image) {
-      const idx = product?.images.indexOf(c.image) ?? -1;
-      if (idx >= 0) setImg(idx);
-    }
+    setImg(0);
   }
+
+  const activeColor = product.colors.find((c) => c.name === selectedColor);
+  const galleryImages =
+    activeColor?.images && activeColor.images.length > 0 ? activeColor.images : product.images;
 
   const waText = encodeURIComponent(
     `Assalam o Alaikum! I want to order: ${product.name}${selectedColor ? ` (Color: ${selectedColor})` : ""} (Qty ${qty}) — ${formatPKR(t.total)}`,
@@ -92,7 +92,7 @@ function ProductPage() {
             className="premium-card group overflow-hidden p-0"
           >
             <img
-              src={product.images[img]}
+              src={galleryImages[img]}
               alt={product.name}
               width={1024}
               height={1024}
@@ -100,7 +100,7 @@ function ProductPage() {
             />
           </motion.div>
           <div className="mt-4 flex gap-3">
-            {product.images.map((src, i) => (
+            {galleryImages.map((src, i) => (
               <button
                 key={i}
                 onClick={() => setImg(i)}

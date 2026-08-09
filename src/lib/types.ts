@@ -46,7 +46,7 @@ export interface Review {
 export interface ProductColor {
   name: string;
   hex: string;
-  image?: string | undefined;
+  images?: string[] | undefined;
 }
 
 export interface Product {
