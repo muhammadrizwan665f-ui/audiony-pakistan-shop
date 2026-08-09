@@ -22,13 +22,23 @@ const STATUSES = [
   "Delivered",
   "Cancelled",
   "Returned",
+  "Refunded",
+  "On Hold",
 ] as const;
 
-async function assertAdmin(context: { supabase: { rpc: Function }; userId: string }) {
-  const { data } = await context.supabase.rpc("has_role", {
-    _user_id: context.userId,
-    _role: "admin",
-  });
+async function assertAdmin(context: { supabase: any; userId: string }) {
+  // Direct check against user_roles table instead of RPC to avoid any function-level permission issues
+  const { data, error } = await context.supabase
+    .from("user_roles")
+    .select("role")
+    .eq("user_id", context.userId)
+    .eq("role", "admin")
+    .maybeSingle();
+
+  if (error) {
+    console.error("Error checking admin role:", error);
+    throw new Error(`Forbidden: admin access only (Database error: ${error.message})`);
+  }
   if (!data) throw new Error("Forbidden: admin access only.");
 }
 

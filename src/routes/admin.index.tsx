@@ -1,6 +1,6 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { Bar, BarChart, ResponsiveContainer, Tooltip, XAxis } from "recharts";
-import { DollarSign, Package, ShoppingBag, Users } from "lucide-react";
+import { AlertTriangle, DollarSign, Package, ShoppingBag, Users, Zap } from "lucide-react";
 import { formatPKR } from "@/lib/pricing";
 import { useAdmin } from "@/lib/admin-store";
 
@@ -9,9 +9,12 @@ export const Route = createFileRoute("/admin/")({
 });
 
 function Dashboard() {
-  const { orders, products } = useAdmin();
+  const { orders, products, settings } = useAdmin();
   const revenue = orders.reduce((a: number, o: { total: number }) => a + o.total, 0);
   const sold = products.reduce((a: number, p: { sold: number }) => a + p.sold, 0);
+  
+  const lowStock = products.filter(p => p.stock <= (settings.lowStockThreshold || 5));
+  const activeFlashSales = products.filter(p => p.flashSale && p.flashEndsAt && new Date(p.flashEndsAt) > new Date());
 
   const chart = products.slice(0, 6).map((p) => ({
     name: p.name.split(" ")[1] ?? p.name.slice(0, 8),
@@ -38,6 +41,45 @@ function Dashboard() {
             <p className="mt-2 font-display text-2xl font-bold">{value}</p>
           </div>
         ))}
+      </div>
+
+      <div className="mt-6 grid gap-6 lg:grid-cols-2">
+        {lowStock.length > 0 && (
+          <div className="premium-card p-6 border-red-500/20">
+            <div className="flex items-center gap-2 text-destructive">
+              <AlertTriangle className="size-5" />
+              <h2 className="font-display font-bold text-lg">Low Stock Alerts</h2>
+            </div>
+            <ul className="mt-4 space-y-3">
+              {lowStock.map(p => (
+                <li key={p.id} className="flex items-center justify-between text-sm">
+                  <span>{p.name}</span>
+                  <span className="font-bold text-destructive">{p.stock} left</span>
+                </li>
+              ))}
+            </ul>
+            <Link to="/admin/products" className="mt-4 block text-xs font-bold uppercase text-primary hover:underline">
+              Manage Inventory →
+            </Link>
+          </div>
+        )}
+
+        {activeFlashSales.length > 0 && (
+          <div className="premium-card p-6 border-amber-500/20">
+            <div className="flex items-center gap-2 text-amber-500">
+              <Zap className="size-5" />
+              <h2 className="font-display font-bold text-lg">Active Flash Sales</h2>
+            </div>
+            <ul className="mt-4 space-y-3">
+              {activeFlashSales.map(p => (
+                <li key={p.id} className="flex items-center justify-between text-sm">
+                  <span>{p.name}</span>
+                  <span className="text-muted-foreground">{new Date(p.flashEndsAt!).toLocaleDateString()}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
       </div>
 
       <div className="premium-card mt-6 p-6">

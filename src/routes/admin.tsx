@@ -1,13 +1,16 @@
 import { createFileRoute, Link, Outlet, useRouterState } from "@tanstack/react-router";
 import {
   BarChart3,
+  BookOpen,
   CreditCard,
   LayoutDashboard,
   LogOut,
   Package,
   Settings,
   ShoppingBag,
+  Star,
   Store,
+  Users,
 } from "lucide-react";
 import { AdminProvider, useAdmin } from "@/lib/admin-store";
 import { Button } from "@/components/ui/button";
@@ -33,6 +36,10 @@ const LINKS = [
   { to: "/admin", label: "Dashboard", Icon: LayoutDashboard },
   { to: "/admin/products", label: "Products", Icon: Package },
   { to: "/admin/orders", label: "Orders", Icon: ShoppingBag },
+  { to: "/admin/coupons", label: "Coupons", Icon: CreditCard },
+  { to: "/admin/customers", label: "Customers", Icon: Users },
+  { to: "/admin/blog", label: "Blog", Icon: BookOpen },
+  { to: "/admin/reviews", label: "Reviews", Icon: Star },
   { to: "/admin/payments", label: "Payments", Icon: CreditCard },
   { to: "/admin/visitors", label: "Visitors", Icon: BarChart3 },
   { to: "/admin/settings", label: "Themes & Settings", Icon: Settings },

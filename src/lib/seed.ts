@@ -40,8 +40,17 @@ export const SEED_SETTINGS: Settings = {
     title: "Audiony Gadgets — Premium Earbuds, Headphones & Gadgets in Pakistan",
     description:
       "Shop premium wireless earbuds, bluetooth headphones, solar lights and CX20 mobile cooling fans in Pakistan. Cash on delivery, 30% off on advance payment.",
+    keywords: "earbuds, headphones, pakistan, gadgets, audiony",
   },
   analytics: { ga4: "", metaPixel: "", gtm: "", tiktokPixel: "" },
+  maintenanceMode: false,
+  orderNotificationEmail: "audionygadgetspk@gmail.com",
+  currency: "PKR",
+  lowStockThreshold: 5,
+  allowGuestCheckout: true,
+  showInventoryCount: true,
+  termsAndConditions: "Standard terms apply.",
+  privacyPolicy: "We protect your data.",
 };
 
 export const SEED_BLOG: BlogPost[] = [

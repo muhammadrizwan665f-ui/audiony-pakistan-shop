@@ -4,7 +4,11 @@ export type ThemeId =
   | "theme-cyan"
   | "theme-orange"
   | "theme-red"
-  | "theme-violet";
+  | "theme-violet"
+  | "theme-emerald"
+  | "theme-rose"
+  | "theme-amber"
+  | "theme-slate";
 
 /** Payment method codes are admin-editable, so this is a free-form string. */
 export type PaymentMethodId = string;
@@ -148,9 +152,17 @@ export interface Settings {
   saleEndsAt: string;
   independenceBanner: boolean;
   liveSalesPopup: boolean;
-  socials: { facebook: string; instagram: string; tiktok: string; youtube: string };
-  seo: { title: string; description: string };
-  analytics: { ga4: string; metaPixel: string; gtm: string; tiktokPixel: string };
+  socials: { facebook: string; instagram: string; tiktok: string; youtube: string; x?: string; linkedin?: string; pinterest?: string };
+  seo: { title: string; description: string; keywords?: string };
+  analytics: { ga4: string; metaPixel: string; gtm: string; tiktokPixel: string; snapchatPixel?: string; clarityId?: string };
+  maintenanceMode: boolean;
+  orderNotificationEmail: string;
+  currency: string;
+  lowStockThreshold: number;
+  allowGuestCheckout: boolean;
+  showInventoryCount: boolean;
+  termsAndConditions: string;
+  privacyPolicy: string;
 }
 
 export interface BlogPost {

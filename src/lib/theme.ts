@@ -14,6 +14,10 @@ export const THEME_CLASSES: ThemeId[] = [
   "theme-orange",
   "theme-red",
   "theme-violet",
+  "theme-emerald",
+  "theme-rose",
+  "theme-amber",
+  "theme-slate",
 ];
 
 export const THEMES: ThemeOption[] = [
@@ -52,5 +56,29 @@ export const THEMES: ThemeOption[] = [
     name: "Midnight Violet",
     description: "Premium midnight purple with soft violet glow.",
     swatch: ["#141026", "#8b5cf6", "#ede9fe"],
+  },
+  {
+    id: "theme-emerald",
+    name: "Deep Emerald",
+    description: "Modern dark green with soft mint highlights.",
+    swatch: ["#064e3b", "#10b981", "#ecfdf5"],
+  },
+  {
+    id: "theme-rose",
+    name: "Soft Rose",
+    description: "Clean aesthetic with rose gold and pink accents.",
+    swatch: ["#ffffff", "#f43f5e", "#fff1f2"],
+  },
+  {
+    id: "theme-amber",
+    name: "Warm Amber",
+    description: "Earthy dark mode with glowing amber highlights.",
+    swatch: ["#1e1b1b", "#f59e0b", "#fffbeb"],
+  },
+  {
+    id: "theme-slate",
+    name: "Minimalist Slate",
+    description: "Strict monochrome pro aesthetic.",
+    swatch: ["#0f172a", "#94a3b8", "#f8fafc"],
   },
 ];

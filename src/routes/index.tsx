@@ -108,8 +108,8 @@ function Home() {
               transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
               className="mt-5 text-4xl font-bold leading-[1.05] sm:text-5xl lg:text-6xl"
             >
-              Premium sound.
-              <span className="text-gradient block">Pakistani prices.</span>
+              Premium Gadgets
+              <span className="text-gradient block">Unbeatable Pakistani Prices</span>
             </motion.h1>
 
             <motion.p
@@ -118,8 +118,8 @@ function Home() {
               transition={{ duration: 0.7, delay: 0.12 }}
               className="mt-5 max-w-lg text-base text-muted-foreground sm:text-lg"
             >
-              Wireless earbuds, ANC headphones, solar lights and CX20 cooling fans — hand-tested,
-              warranty backed and delivered to your door with cash on delivery.
+              Discover premium earbuds, headphones, solar lights, and CX20 cooling fans with official
+              warranty, fast nationwide delivery, Cash on Delivery, and exclusive advance payment discounts.
             </motion.p>
 
             <motion.div
@@ -130,12 +130,12 @@ function Home() {
             >
               <Button size="lg" className="h-13 px-7 text-base" asChild>
                 <Link to="/shop">
-                  Shop the Sale <ArrowRight className="ml-1 size-4" />
+                  🛒 Shop Now <ArrowRight className="ml-1 size-4" />
                 </Link>
               </Button>
               <Button size="lg" variant="secondary" className="h-13 px-7 text-base" asChild>
                 <Link to="/deals">
-                  <Flame className="mr-1 size-4" /> Flash Deals
+                  <Flame className="mr-1 size-4" /> ⚡ View Flash Deals
                 </Link>
               </Button>
             </motion.div>
@@ -199,80 +199,41 @@ function Home() {
         </div>
       </section>
 
-      {/* TRUST STRIP */}
-      <section className="border-y border-border bg-surface-2">
-        <div className="mx-auto grid max-w-7xl gap-4 px-4 py-8 sm:grid-cols-2 lg:grid-cols-4">
-          {TRUST.map(({ Icon, title, text }, i) => (
-            <Reveal key={title} delay={i * 0.06} className="flex items-center gap-3">
-              <span className="gradient-brand flex size-11 shrink-0 items-center justify-center rounded-2xl text-brand-foreground">
-                <Icon className="size-5" />
-              </span>
-              <div>
-                <p className="font-display text-sm font-bold">{title}</p>
-                <p className="text-xs text-muted-foreground">{text}</p>
-              </div>
-            </Reveal>
-          ))}
-        </div>
-      </section>
 
-      {/* AZADI BANNER */}
-      {settings.independenceBanner ? (
-        <section className="mx-auto max-w-7xl px-4 pt-16">
-          <Reveal className="gradient-brand relative overflow-hidden rounded-[2rem] p-8 text-brand-foreground shadow-premium sm:p-12">
-            <div
-              aria-hidden
-              className="absolute -right-10 -top-10 size-56 rounded-full bg-background/15 blur-2xl"
-            />
-            <div className="relative flex flex-wrap items-center justify-between gap-6">
-              <div>
-                <p className="text-xs font-bold uppercase tracking-[0.25em] opacity-90">
-                  Jashn-e-Azadi · 14 August
-                </p>
-                <h2 className="mt-2 max-w-xl text-3xl font-bold sm:text-4xl">
-                  Up to 60% off + extra 30% on advance payment
-                </h2>
-                <p className="mt-2 max-w-lg text-sm opacity-90">{settings.saleBannerText}</p>
-              </div>
-              <div className="space-y-3">
-                <Countdown target={settings.saleEndsAt} />
-                <Button variant="secondary" size="lg" className="w-full" asChild>
-                  <Link to="/deals">Grab the Azadi deals</Link>
-                </Button>
-              </div>
-            </div>
-          </Reveal>
-        </section>
-      ) : null}
 
-      {/* CATEGORIES */}
-      <section className="mx-auto max-w-7xl px-4 pt-20">
-        <SectionHeading
-          eyebrow="Categories"
-          title="Shop by category"
-          subtitle="Four categories, zero filler — only gadgets we use ourselves."
-        />
-        <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-          {CATEGORIES.map((c, i) => (
-            <Reveal key={c.id} delay={i * 0.06}>
+      {/* PRODUCT TICKER */}
+      <section className="overflow-hidden border-y border-border bg-surface-2 py-10">
+        <div className="flex whitespace-nowrap">
+          <motion.div
+            initial={{ x: 0 }}
+            animate={{ x: "-50%" }}
+            transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
+            className="flex items-center gap-6 px-3"
+          >
+            {[...active, ...active, ...active].map((p, i) => (
               <Link
-                to="/shop"
-                search={{ category: c.name }}
-                className="premium-card group flex h-full flex-col justify-between gap-6 p-6"
+                key={`${p.id}-${i}`}
+                to="/product/$slug"
+                params={{ slug: p.slug }}
+                className="group flex w-[180px] shrink-0 items-center gap-3 rounded-full border border-border bg-background px-4 py-2 shadow-sm transition-all hover:border-primary hover:shadow-md"
+
               >
-                <span className="gradient-brand flex size-12 items-center justify-center rounded-2xl text-brand-foreground">
-                  <Headphones className="size-5" />
-                </span>
-                <div>
-                  <h3 className="font-display text-lg font-bold">{c.name}</h3>
-                  <p className="mt-1 text-sm text-muted-foreground">{c.blurb}</p>
-                  <span className="mt-3 inline-flex items-center gap-1 text-sm font-semibold text-primary">
-                    Explore <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
+                <img
+                  src={p.images[0] ?? "/placeholder.svg"}
+                  alt={p.name}
+                  className="size-11 flex-shrink-0 rounded-full object-cover outline outline-2 outline-offset-2 outline-transparent transition-all group-hover:outline-primary"
+                />
+                <div className="flex flex-col min-w-0">
+                  <span className="truncate text-xs font-bold leading-tight">{p.name}</span>
+                  <span className="text-[11px] font-bold text-primary">
+                    {formatPKR(unitPrice(p))}
                   </span>
                 </div>
+
+
               </Link>
-            </Reveal>
-          ))}
+            ))}
+          </motion.div>
         </div>
       </section>
 
@@ -312,67 +273,57 @@ function Home() {
         </div>
       </section>
 
-      {/* VIDEO / BRAND STORY */}
-      <section className="mx-auto max-w-7xl px-4 pt-24">
-        <div className="grid items-center gap-10 lg:grid-cols-2">
-          <Reveal>
-            <div className="group relative overflow-hidden rounded-[2rem] border border-border shadow-premium">
-              <img
-                src={hero}
-                alt="Audiony brand film"
-                loading="lazy"
-                width={1920}
-                height={1088}
-                className="aspect-video w-full object-cover transition-transform duration-700 group-hover:scale-105"
-              />
-              <button
-                type="button"
-                aria-label="Play brand film"
-                className="absolute inset-0 flex items-center justify-center"
-              >
-                <span className="glass flex size-20 items-center justify-center rounded-full shadow-premium">
-                  <PlayCircle className="size-10 text-primary" />
-                </span>
-              </button>
-            </div>
-          </Reveal>
-          <Reveal delay={0.1}>
-            <span className="text-xs font-bold uppercase tracking-[0.25em] text-primary">
-              Our Story
-            </span>
-            <h2 className="mt-3 text-3xl font-bold sm:text-4xl">
-              Built in Pakistan, for people who hate wasting money
-            </h2>
-            <p className="mt-4 text-muted-foreground">
-              We started Audiony Gadgets because buying electronics online in Pakistan felt like a
-              gamble. Every product we list is tested in-house, shipped with warranty, and backed by
-              a WhatsApp support team that actually replies.
-            </p>
-            <ul className="mt-6 space-y-3">
-              {[
-                "Every unit quality-checked before dispatch",
-                "COD available in 400+ cities",
-                "Replacement within 7 days on any fault",
-                "Real reviews, never deleted",
-              ].map((t) => (
-                <li key={t} className="flex items-start gap-2 text-sm">
-                  <BadgeCheck className="mt-0.5 size-4 shrink-0 text-primary" /> {t}
-                </li>
-              ))}
-            </ul>
-            <Button className="mt-7" asChild>
-              <Link to="/about">Read our story</Link>
-            </Button>
-          </Reveal>
-        </div>
-      </section>
-
       {/* TRENDING */}
       <section className="mx-auto max-w-7xl px-4 pt-24">
         <SectionHeading eyebrow="Trending" title="Highest rated right now" />
         <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
           {trending.map((p, i) => (
             <ProductCard key={p.id} product={p} index={i} />
+          ))}
+        </div>
+      </section>
+
+      {/* ALL PRODUCTS (if needed more volume) */}
+      <section className="mx-auto max-w-7xl px-4 pt-24">
+        <SectionHeading
+          eyebrow="Our Catalog"
+          title="All Premium Gadgets"
+          subtitle="Quality tested and ready for nationwide delivery."
+        />
+        <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+          {active.map((p, i) => (
+            <ProductCard key={p.id} product={p} index={i} />
+          ))}
+        </div>
+      </section>
+
+      {/* CATEGORIES */}
+      <section className="mx-auto max-w-7xl px-4 pt-20">
+        <SectionHeading
+          eyebrow="Categories"
+          title="Shop by category"
+          subtitle="Four categories, zero filler — only gadgets we use ourselves."
+        />
+        <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+          {CATEGORIES.map((c, i) => (
+            <Reveal key={c.id} delay={i * 0.06}>
+              <Link
+                to="/shop"
+                search={{ category: c.name }}
+                className="premium-card group flex h-full flex-col justify-between gap-6 p-6"
+              >
+                <span className="gradient-brand flex size-12 items-center justify-center rounded-2xl text-brand-foreground">
+                  <Headphones className="size-5" />
+                </span>
+                <div>
+                  <h3 className="font-display text-lg font-bold">{c.name}</h3>
+                  <p className="mt-1 text-sm text-muted-foreground">{c.blurb}</p>
+                  <span className="mt-3 inline-flex items-center gap-1 text-sm font-semibold text-primary">
+                    Explore <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
+                  </span>
+                </div>
+              </Link>
+            </Reveal>
           ))}
         </div>
       </section>

@@ -226,18 +226,22 @@ function ProductForm({
 }) {
   const [uploading, setUploading] = useState(false);
 
-  const handleFile = async (file: File) => {
+  const handleFiles = async (files: FileList) => {
     setUploading(true);
     try {
-      const dataUrl = await new Promise<string>((resolve, reject) => {
-        const reader = new FileReader();
-        reader.onload = () => resolve(String(reader.result));
-        reader.onerror = () => reject(new Error("Could not read this file."));
-        reader.readAsDataURL(file);
-      });
-      const { url } = await uploadProductImage({ data: { dataUrl, name: file.name } });
-      onChange({ ...value, images: [...value.images, url] });
-      toast.success("Image uploaded");
+      const urls: string[] = [];
+      for (const file of Array.from(files)) {
+        const dataUrl = await new Promise<string>((resolve, reject) => {
+          const reader = new FileReader();
+          reader.onload = () => resolve(String(reader.result));
+          reader.onerror = () => reject(new Error("Could not read this file."));
+          reader.readAsDataURL(file);
+        });
+        const { url } = await uploadProductImage({ data: { dataUrl, name: file.name } });
+        urls.push(url);
+      }
+      onChange({ ...value, images: [...value.images, ...urls] });
+      toast.success(`${files.length} image(s) uploaded`);
     } catch (error) {
       toast.error(error instanceof Error ? error.message : "Upload failed.");
     } finally {
@@ -362,12 +366,12 @@ function ProductForm({
         <div className="mt-3 flex flex-wrap items-center gap-2">
           <Input
             type="file"
+            multiple
             accept="image/*"
             className="max-w-xs"
             disabled={uploading}
             onChange={(e) => {
-              const file = e.target.files?.[0];
-              if (file) void handleFile(file);
+              if (e.target.files?.length) void handleFiles(e.target.files);
               e.target.value = "";
             }}
           />

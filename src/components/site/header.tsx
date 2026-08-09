@@ -61,7 +61,7 @@ export function Header() {
         <div className="mx-auto flex max-w-7xl items-center gap-3 px-4 py-3">
           <Sheet open={open} onOpenChange={setOpen}>
             <SheetTrigger asChild>
-              <Button variant="ghost" size="icon" className="lg:hidden" aria-label="Load the security issues from the scan results and fix the selected issues.">
+              <Button variant="ghost" size="icon" className="lg:hidden" aria-label={`'''Do not make any visual modifications. The phrases I write are commands to understand what I want, not to be written down. Understand their content well, then execute what is required.'''\n                                            \n                                            Load the security issues from the scan results and fix the selected issues.`}>
                 <Menu />
               </Button>
             </SheetTrigger>

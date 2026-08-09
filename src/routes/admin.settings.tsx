@@ -132,6 +132,16 @@ function AdminSettings() {
               value={draft.shippingFlat}
               onChange={(v) => set("shippingFlat", v)}
             />
+            <TextField
+              label="Currency code"
+              value={draft.currency}
+              onChange={(v) => set("currency", v)}
+            />
+            <NumberField
+              label="Low stock threshold"
+              value={draft.lowStockThreshold}
+              onChange={(v) => set("lowStockThreshold", v)}
+            />
           </div>
           <div className="mt-4">
             <Label htmlFor="banner">Sale banner text</Label>
@@ -162,17 +172,28 @@ function AdminSettings() {
                 checked={draft.liveSalesPopup}
                 onChange={(v) => set("liveSalesPopup", v)}
               />
+              <ToggleRow
+                id="maint"
+                label="Maintenance mode"
+                checked={draft.maintenanceMode}
+                onChange={(v) => set("maintenanceMode", v)}
+              />
             </div>
           </div>
         </section>
 
         <section className="premium-card p-6">
-          <h2 className="font-display text-lg font-bold">SEO</h2>
+          <h2 className="font-display text-lg font-bold">SEO &amp; Legal</h2>
           <div className="mt-5 space-y-4">
             <TextField
               label="Meta title"
               value={draft.seo.title}
               onChange={(v) => set("seo", { ...draft.seo, title: v })}
+            />
+            <TextField
+              label="Meta keywords"
+              value={draft.seo.keywords ?? ""}
+              onChange={(v) => set("seo", { ...draft.seo, keywords: v })}
             />
             <div>
               <Label htmlFor="metadesc">Meta description</Label>
@@ -184,11 +205,20 @@ function AdminSettings() {
                 onChange={(e) => set("seo", { ...draft.seo, description: e.target.value })}
               />
             </div>
+            <div>
+              <Label htmlFor="terms">Terms &amp; Conditions</Label>
+              <Textarea
+                id="terms"
+                className="mt-1.5"
+                value={draft.termsAndConditions}
+                onChange={(e) => set("termsAndConditions", e.target.value)}
+              />
+            </div>
           </div>
         </section>
 
         <section className="premium-card p-6">
-          <h2 className="font-display text-lg font-bold">Marketing pixels</h2>
+          <h2 className="font-display text-lg font-bold">Marketing &amp; Ops</h2>
           <div className="mt-5 grid gap-4 sm:grid-cols-2">
             <TextField
               label="GA4 measurement ID"
@@ -201,15 +231,29 @@ function AdminSettings() {
               onChange={(v) => set("analytics", { ...draft.analytics, metaPixel: v })}
             />
             <TextField
-              label="Google Tag Manager ID"
-              value={draft.analytics.gtm}
-              onChange={(v) => set("analytics", { ...draft.analytics, gtm: v })}
+              label="Order notification email"
+              value={draft.orderNotificationEmail}
+              onChange={(v) => set("orderNotificationEmail", v)}
             />
             <TextField
-              label="TikTok Pixel ID"
-              value={draft.analytics.tiktokPixel}
-              onChange={(v) => set("analytics", { ...draft.analytics, tiktokPixel: v })}
+              label="Microsoft Clarity ID"
+              value={draft.analytics.clarityId ?? ""}
+              onChange={(v) => set("analytics", { ...draft.analytics, clarityId: v })}
             />
+            <div className="space-y-3 pt-1">
+              <ToggleRow
+                id="inventory"
+                label="Show inventory count"
+                checked={draft.showInventoryCount}
+                onChange={(v) => set("showInventoryCount", v)}
+              />
+              <ToggleRow
+                id="guest"
+                label="Allow guest checkout"
+                checked={draft.allowGuestCheckout}
+                onChange={(v) => set("allowGuestCheckout", v)}
+              />
+            </div>
           </div>
         </section>
 
