@@ -48,7 +48,7 @@ export function rowToProduct(r: Row): Product {
     sortOrder: num(r["sort_order"]),
     reviews: arr(r["reviews"]),
     faqs: arr(r["faqs"]),
-    colors: arr<{ name: string; hex: string; image?: string }>(r["colors"]),
+    colors: arr<{ name: string; hex: string; images?: string[] }>(r["colors"]),
   };
 }
 

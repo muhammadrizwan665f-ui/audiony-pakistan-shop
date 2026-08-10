@@ -116,8 +116,8 @@ function Cart() {
                       </Button>
                     </div>
 
-                    <div className="mt-3 flex flex-wrap items-center justify-between gap-3">
-                      <div className="flex items-center gap-1 rounded-full border border-border p-1">
+                    <div className="mt-3 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                      <div className="flex w-fit items-center gap-1 rounded-full border border-border p-1">
                         <Button
                           variant="ghost"
                           size="icon"
@@ -138,7 +138,7 @@ function Cart() {
                           <Plus className="size-3.5" />
                         </Button>
                       </div>
-                      <div className="text-right">
+                      <div className="sm:text-right">
                         {t.rule ? (
                           <p className="text-xs font-semibold text-success">
                             Bulk {t.rule.discountPct}% off applied (-{formatPKR(t.bulk)})

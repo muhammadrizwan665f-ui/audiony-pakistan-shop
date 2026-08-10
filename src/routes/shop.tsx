@@ -124,12 +124,13 @@ function Shop() {
 
       <div>
         <h3 className="font-display text-sm font-bold uppercase tracking-widest">Rating</h3>
-        <div className="mt-3 flex flex-wrap gap-2">
+        <div className="no-scrollbar mt-3 flex gap-2 overflow-x-auto pb-1 sm:flex-wrap">
           {[0, 4, 4.5].map((r) => (
             <Button
               key={r}
               size="sm"
               variant={minRating === r ? "default" : "secondary"}
+              className="shrink-0 sm:shrink"
               onClick={() => setMinRating(r)}
             >
               {r === 0 ? "All" : `${r}+`}

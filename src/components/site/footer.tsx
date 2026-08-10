@@ -25,7 +25,7 @@ export function Footer() {
   return (
     <footer className="mt-24 border-t border-border bg-surface-2">
       <div className="mx-auto max-w-7xl px-4 py-14">
-        <div className="premium-card gradient-brand mb-14 grid gap-6 p-8 text-brand-foreground md:grid-cols-2 md:items-center">
+        <div className="premium-card gradient-brand mb-14 flex flex-col gap-6 p-6 text-brand-foreground md:grid md:grid-cols-2 md:items-center sm:p-8">
           <div>
             <h3 className="font-display text-2xl font-bold">Get flash deals before anyone else</h3>
             <p className="mt-2 text-sm opacity-90">
@@ -138,28 +138,35 @@ export function Footer() {
           <div>
             <h4 className="font-display text-sm font-bold uppercase tracking-widest">Contact</h4>
             <ul className="mt-4 space-y-3 text-sm text-muted-foreground">
-              <li className="flex items-center gap-2">
-                <Phone className="size-4 text-primary" /> {settings.supportPhone}
+              <li className="flex items-start gap-2">
+                <Phone className="mt-0.5 size-4 shrink-0 text-primary" />
+                <span className="break-all">{settings.supportPhone}</span>
               </li>
-              <li className="flex items-center gap-2">
-                <Mail className="size-4 text-primary" /> {settings.email}
+              <li className="flex items-start gap-2">
+                <Mail className="mt-0.5 size-4 shrink-0 text-primary" />
+                <span className="break-all">{settings.email}</span>
               </li>
-              <li className="flex items-center gap-2">
-                <MapPin className="size-4 text-primary" /> {settings.address}
+              <li className="flex items-start gap-2">
+                <MapPin className="mt-0.5 size-4 shrink-0 text-primary" />
+                <span>{settings.address}</span>
               </li>
-              <li className="flex items-center gap-2">
-                <Truck className="size-4 text-primary" /> Nationwide COD available
+              <li className="flex items-start gap-2">
+                <Truck className="mt-0.5 size-4 shrink-0 text-primary" />
+                <span>Nationwide COD available</span>
               </li>
-              <li className="flex items-center gap-2">
-                <ShieldCheck className="size-4 text-primary" /> Secure checkout & warranty
+              <li className="flex items-start gap-2">
+                <ShieldCheck className="mt-0.5 size-4 shrink-0 text-primary" />
+                <span>Secure checkout & warranty</span>
               </li>
             </ul>
           </div>
         </div>
 
-        <div className="mt-12 flex flex-col items-center justify-between gap-3 border-t border-border pt-6 text-xs text-muted-foreground sm:flex-row">
+        <div className="mt-12 flex flex-col items-center justify-between gap-3 border-t border-border pt-6 text-center text-xs text-muted-foreground sm:flex-row sm:text-left">
           <p>© {new Date().getFullYear()} Audiony Gadgets. All rights reserved.</p>
-          <p>EasyPaisa · JazzCash · Bank Transfer · Cash on Delivery</p>
+          <p className="flex flex-wrap justify-center gap-x-2">
+            <span>EasyPaisa</span> · <span>JazzCash</span> · <span>Bank Transfer</span> · <span>COD</span>
+          </p>
         </div>
       </div>
     </footer>

@@ -99,13 +99,13 @@ function ProductPage() {
               className="aspect-square w-full object-cover transition-transform duration-700 group-hover:scale-125"
             />
           </motion.div>
-          <div className="mt-4 flex gap-3">
+          <div className="no-scrollbar mt-4 flex gap-3 overflow-x-auto pb-2 sm:flex-wrap sm:overflow-visible">
             {galleryImages.map((src, i) => (
               <button
                 key={i}
                 onClick={() => setImg(i)}
                 aria-label={`View image ${i + 1}`}
-                className={`size-20 overflow-hidden rounded-2xl border-2 ${i === img ? "border-primary" : "border-border"}`}
+                className={`size-20 shrink-0 overflow-hidden rounded-2xl border-2 sm:shrink ${i === img ? "border-primary" : "border-border"}`}
               >
                 <img src={src} alt="" loading="lazy" className="size-full object-cover" />
               </button>
@@ -114,11 +114,11 @@ function ProductPage() {
         </div>
 
         <div>
-          <div className="flex flex-wrap items-center gap-2">
+          <div className="no-scrollbar flex gap-2 overflow-x-auto pb-1 sm:flex-wrap sm:overflow-visible">
             {product.badges.map((b) => (
               <span
                 key={b}
-                className="gradient-brand rounded-full px-3 py-1 text-xs font-bold text-brand-foreground"
+                className="shrink-0 gradient-brand rounded-full px-3 py-1 text-xs font-bold text-brand-foreground sm:shrink"
               >
                 {b}
               </span>
@@ -169,19 +169,19 @@ function ProductPage() {
             <span className="text-muted-foreground">· {product.sold.toLocaleString()} sold</span>
           </div>
 
-          <div className="mt-5 flex flex-wrap items-end gap-3">
+          <div className="mt-5 flex flex-wrap items-baseline gap-x-3 gap-y-1">
             <span className="font-display text-4xl font-bold text-primary">
               {formatPKR(unitPrice(product))}
             </span>
             {product.salePrice ? (
-              <>
+              <div className="flex items-center gap-2">
                 <span className="text-lg text-muted-foreground line-through">
                   {formatPKR(product.price)}
                 </span>
-                <span className="rounded-full bg-destructive px-2.5 py-1 text-xs font-bold text-destructive-foreground">
+                <span className="rounded-full bg-destructive px-2.5 py-1 text-[10px] font-bold text-destructive-foreground uppercase tracking-tight">
                   Save {off}%
                 </span>
-              </>
+              </div>
             ) : null}
           </div>
 
@@ -204,14 +204,14 @@ function ProductPage() {
           {/* Bulk discount box */}
           <div className="premium-card mt-6 p-5">
             <h2 className="font-display font-bold">Buy more, save more</h2>
-            <div className="mt-3 grid gap-2 sm:grid-cols-3">
+            <div className="mt-3 flex flex-col gap-2 sm:grid sm:grid-cols-3">
               {product.bulkRules.map((r) => {
                 const activeRule = bulkDiscountFor(product.bulkRules, qty)?.minQty === r.minQty;
                 return (
                   <button
                     key={r.minQty}
                     onClick={() => setQty(r.minQty)}
-                    className={`rounded-2xl border p-3 text-left transition-colors ${activeRule ? "border-primary bg-secondary" : "border-border"}`}
+                    className={`min-h-[60px] rounded-2xl border p-3 text-left transition-colors ${activeRule ? "border-primary bg-secondary" : "border-border"}`}
                   >
                     <p className="font-display font-bold">Buy {r.minQty}</p>
                     <p className="text-xs text-success">{r.discountPct}% off</p>
@@ -272,9 +272,10 @@ function ProductPage() {
             </p>
           </div>
 
-          <div className="mt-5 grid gap-3 sm:grid-cols-2">
+          <div className="mt-5 flex flex-col gap-3 sm:grid sm:grid-cols-2">
             <Button
               size="lg"
+              className="h-12 w-full text-base sm:h-11 sm:text-sm"
               onClick={() => {
                 addToCart(product.id, qty, selectedColor);
                 toast.success("Added to cart", { description: product.name });
@@ -282,7 +283,7 @@ function ProductPage() {
             >
               Add to Cart
             </Button>
-            <Button size="lg" variant="secondary" asChild>
+            <Button size="lg" variant="secondary" className="h-12 w-full text-base sm:h-11 sm:text-sm" asChild>
               <Link to="/checkout" onClick={() => addToCart(product.id, qty, selectedColor)}>
                 Buy Now
               </Link>
@@ -291,7 +292,7 @@ function ProductPage() {
               href={`https://wa.me/${settings.whatsapp}?text=${waText}`}
               target="_blank"
               rel="noreferrer"
-              className="flex items-center justify-center gap-2 rounded-xl bg-success px-4 py-3 font-semibold text-background transition-transform hover:scale-[1.02] sm:col-span-2"
+              className="flex h-12 items-center justify-center gap-2 rounded-xl bg-success px-4 py-3 font-semibold text-background transition-transform hover:scale-[1.02] sm:col-span-2 sm:h-11"
             >
               Order on WhatsApp
             </a>
@@ -332,12 +333,12 @@ function ProductPage() {
 
       {/* DETAILS */}
       <Tabs defaultValue="features" className="mt-16">
-        <TabsList className="flex-wrap">
-          <TabsTrigger value="features">Features</TabsTrigger>
-          <TabsTrigger value="specs">Specifications</TabsTrigger>
-          <TabsTrigger value="included">What's Included</TabsTrigger>
-          <TabsTrigger value="reviews">Reviews ({product.reviews.length})</TabsTrigger>
-          <TabsTrigger value="faq">FAQs</TabsTrigger>
+        <TabsList className="no-scrollbar flex w-full justify-start overflow-x-auto pb-1 sm:justify-center">
+          <TabsTrigger value="features" className="shrink-0">Features</TabsTrigger>
+          <TabsTrigger value="specs" className="shrink-0">Specifications</TabsTrigger>
+          <TabsTrigger value="included" className="shrink-0">What's Included</TabsTrigger>
+          <TabsTrigger value="reviews" className="shrink-0">Reviews ({product.reviews.length})</TabsTrigger>
+          <TabsTrigger value="faq" className="shrink-0">FAQs</TabsTrigger>
         </TabsList>
 
         <TabsContent value="features" className="premium-card mt-5 p-6">
@@ -431,22 +432,24 @@ function ProductPage() {
 
       {/* Sticky mobile buy bar */}
       <Reveal className="fixed inset-x-0 bottom-0 z-40 lg:hidden">
-        <div className="glass flex items-center gap-3 border-t border-border p-3">
-          <div className="flex-1">
-            <p className="font-display text-lg font-bold leading-none">{formatPKR(t.total)}</p>
+        <div className="glass flex items-center gap-3 border-t border-border p-3 pb-safe-bottom">
+          <div className="flex-1 min-w-0">
+            <p className="font-display text-base font-bold leading-tight truncate sm:text-lg">{formatPKR(t.total)}</p>
             {bestPay ? (
-              <p className="text-[11px] text-success">Save {bestPay.discountPct}% on advance</p>
+              <p className="text-[10px] text-success leading-tight sm:text-[11px]">Save {bestPay.discountPct}% on advance</p>
             ) : null}
           </div>
           <Button
+            size="sm"
+            className="h-10 px-3 text-xs sm:h-11 sm:px-4 sm:text-sm"
             onClick={() => {
               addToCart(product.id, qty, selectedColor);
               toast.success("Added to cart");
             }}
           >
-            Add to Cart
+            Add
           </Button>
-          <Button variant="secondary" asChild>
+          <Button variant="secondary" size="sm" className="h-10 px-3 text-xs sm:h-11 sm:px-4 sm:text-sm" asChild>
             <Link to="/checkout" onClick={() => addToCart(product.id, qty, selectedColor)}>
               Buy Now
             </Link>

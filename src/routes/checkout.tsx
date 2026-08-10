@@ -224,9 +224,9 @@ function Checkout() {
                 >
                   <RadioGroupItem id={`pm-${m.id}`} value={m.id} className="mt-1" />
                   <div className="flex-1">
-                    <div className="flex flex-wrap items-center justify-between gap-2">
+                    <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
                       <span className="font-semibold">{m.label}</span>
-                      <span className="rounded-full bg-success/15 px-2.5 py-0.5 text-xs font-bold text-success">
+                      <span className="w-fit rounded-full bg-success/15 px-2.5 py-0.5 text-xs font-bold text-success">
                         {m.discountPct}% OFF
                       </span>
                     </div>
@@ -392,15 +392,16 @@ function Line({ label, value, accent }: { label: string; value: string; accent?:
 
 function CopyRow({ label, value }: { label: string; value: string }) {
   return (
-    <div className="flex items-center justify-between gap-2 rounded-lg bg-secondary px-2.5 py-2">
+    <div className="flex flex-col gap-2 rounded-lg bg-secondary px-2.5 py-2 sm:flex-row sm:items-center sm:justify-between">
       <div className="min-w-0">
         <p className="text-[11px] uppercase tracking-wide text-muted-foreground">{label}</p>
-        <p className="truncate font-semibold">{value}</p>
+        <p className="truncate font-semibold text-sm sm:text-base">{value}</p>
       </div>
       <Button
         type="button"
         size="sm"
         variant="outline"
+        className="h-8 w-full sm:w-auto"
         onClick={() => {
           void navigator.clipboard
             .writeText(value)

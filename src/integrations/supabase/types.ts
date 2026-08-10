@@ -165,6 +165,7 @@ export type Database = {
           brand: string
           bulk_rules: Json
           category: string
+          colors: Json
           created_at: string
           description: string
           faqs: Json
@@ -199,6 +200,7 @@ export type Database = {
           brand?: string
           bulk_rules?: Json
           category?: string
+          colors?: Json
           created_at?: string
           description?: string
           faqs?: Json
@@ -233,6 +235,7 @@ export type Database = {
           brand?: string
           bulk_rules?: Json
           category?: string
+          colors?: Json
           created_at?: string
           description?: string
           faqs?: Json
